@@ -2,7 +2,6 @@ package Utils;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -10,11 +9,10 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static Page.HomePage.HOME_STRING;
+import static Page.HomePage.HOME_STRING_LOCATOR;
 import static Utils.DriverUtils.driver;
 import static config.ConfigReader.readPropertiesFile;
 
@@ -33,9 +31,8 @@ public class DefaultUsingMethods {
         explicitWait(checkpointWait);
     }
 
-    public static void sendKeys(By xpath, String str, By checkpointWait) {
-        driver.findElement(xpath).sendKeys(str, Keys.ENTER);
-        explicitWait(checkpointWait);
+    public static void sendKeys(By xpath, String str) {
+        driver.findElement(xpath).sendKeys(str);
     }
 
     public static int getResponseCode() {
@@ -62,7 +59,7 @@ public class DefaultUsingMethods {
 
     public static void openSite() {
         driver.get(readPropertiesFile("URL"));
-        explicitWait(HOME_STRING);
+        explicitWait(HOME_STRING_LOCATOR);
     }
 
     public static void browserQuit() {
