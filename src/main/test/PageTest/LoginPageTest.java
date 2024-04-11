@@ -78,6 +78,11 @@ public class LoginPageTest {
         assertTrue(isDisplay(xpath),NOT_VISIBLE_MASSAGE);
     }
 
+    /**
+     * Тестовый метод авторизации пользователя
+     * @param userEmail
+     * @param userPassword
+     */
     @Test(dataProvider = "userDataTest", priority = 3)
     public static void LogIn(String userEmail, String userPassword) {
         sendKeys(INPUT_EMAIL_FIELD_LOCATOR, userEmail);

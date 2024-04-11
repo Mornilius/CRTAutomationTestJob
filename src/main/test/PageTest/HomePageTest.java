@@ -18,6 +18,10 @@ import static org.testng.Assert.assertTrue;
 
 public class HomePageTest {
 
+    /**
+     *
+     * Набор локаторов с главной страницы
+     */
     @DataProvider(name = "HomePageLocators")
     public static Object[] arrayHomePageXpath() {
         return new Object[]{
@@ -33,6 +37,10 @@ public class HomePageTest {
         openSite();
     }
 
+    /**
+     *
+     * Проверка отображаемости элементов на странице
+     */
     @Test(dataProvider = "HomePageLocators")
     public static void checkElementsIsDisplay(By xpath) {
         assertTrue(isDisplay(xpath),NOT_VISIBLE_MASSAGE);
