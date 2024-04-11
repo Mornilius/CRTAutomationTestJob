@@ -53,10 +53,6 @@ public class DefaultUsingMethods {
         jsex.executeScript("arguments[0].click();", element);
     }
 
-    public static void displayResponseCode() {
-        System.out.println(getResponseCode());
-    }
-
     public static void openSite() {
         driver.get(readPropertiesFile("URL"));
         explicitWait(HOME_STRING_LOCATOR);
@@ -66,9 +62,6 @@ public class DefaultUsingMethods {
         driver.quit();
     }
 
-    public static void timeOut() {
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(DefaultUsingConstants.TIME_MILLIS));
-    }
 
     public static void explicitWait(By xpath) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(3000));
@@ -77,13 +70,5 @@ public class DefaultUsingMethods {
 
     public static By gettingParentsLocator(String defLocator, By xpath) {
         return By.xpath(String.format(defLocator + "%s", xpath));
-    }
-
-    public static List convertList(By xpath, List<WebElement> WebElementlist, List<String> elements_string) {
-        WebElementlist = driver.findElements(xpath);
-        for (WebElement element : WebElementlist) {
-            elements_string.add(Arrays.toString(((element.getText().toLowerCase().split("\n")))));
-        }
-        return elements_string;
     }
 }
