@@ -2,6 +2,7 @@ package Utils;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -10,8 +11,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.Duration;
 
-import static Page.HomePage.HOME_STRING_LOCATOR;
+import static Page.HomePage.HOME_TEXT_LOCATOR;
 import static Utils.DriverUtils.driver;
+import static Utils.DriverUtils.getWebDriver;
 import static config.ConfigReader.readPropertiesFile;
 
 public class DefaultUsingMethods {
@@ -27,6 +29,10 @@ public class DefaultUsingMethods {
     public static void clickInteractiveElement(By XPATH, By checkpointWait) {
         driver.findElement(XPATH).click();
         explicitWait(checkpointWait);
+    }
+
+    public static boolean elementIsSelected(By XPATH) {
+        return driver.findElement(XPATH).isSelected();
     }
 
     public static void sendKeys(By xpath, String str) {
@@ -52,12 +58,19 @@ public class DefaultUsingMethods {
     }
 
     public static void openSite() {
+        driver = getWebDriver();
         driver.get(readPropertiesFile("URL"));
-        explicitWait(HOME_STRING_LOCATOR);
+        explicitWait(HOME_TEXT_LOCATOR);
     }
 
     public static void browserQuit() {
-        driver.quit();
+        if(driver != null) {
+            driver.quit();
+        }
+    }
+
+    public static void browserClose() {
+        driver.close();
     }
 
 

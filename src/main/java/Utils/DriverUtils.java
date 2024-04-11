@@ -9,8 +9,7 @@ import static config.ConfigReader.readPropertiesFile;
 
 public class DriverUtils {
 
-    public static WebDriver driver = getWebDriver();
-
+    public static WebDriver driver;
     public static WebDriver getWebDriver() {
         switch (readPropertiesFile("BrowserType")) {
             case "Firefox":

@@ -7,12 +7,12 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import static Page.HomePage.SIGN_UP_BUTTON_LOCATOR;
-import static Page.LoginPage.LOGIN_STRING_LOCATOR;
+import static Page.HomePage.HEAD_SIGN_UP_BUTTON_LOCATOR;
+import static Page.LoginPage.LOGIN_TEXT_LOCATOR;
 import static Page.SignUpPage.INPUT_EMAIL_FIELD_LOCATOR;
 import static Page.SignUpPage.INPUT_NAME_FIELD_LOCATOR;
 import static Page.SignUpPage.INPUT_PASSWORD_FIELD_LOCATOR;
-import static Page.SignUpPage.SIGN_UP_STRING_LOCATOR;
+import static Page.SignUpPage.SIGN_UP_TEXT_LOCATOR;
 import static Utils.DataUserConstants.USER_EMAIL;
 import static Utils.DataUserConstants.USER_PASSWORD;
 import static Utils.DefaultUsingMethods.browserQuit;
@@ -27,42 +27,17 @@ import static org.testng.Assert.assertTrue;
 
 public class SignUpPageTest {
 
-    /**
-     *
-     * набор локаторов со страницы регистрации нового пользователя
-     */
-    @DataProvider(name = "SignUpLocator")
-    public static Object[] arrayXpath() {
-        return new Object[]{
-                INPUT_EMAIL_FIELD_LOCATOR,
-                INPUT_PASSWORD_FIELD_LOCATOR,
-                INPUT_NAME_FIELD_LOCATOR,
-                SIGN_UP_STRING_LOCATOR
-        };
-    }
-
-    /**
-     *
-     *Данные для регистрации нового пользователя из класса DataUserConstants
-     */
-    @DataProvider(name = "userDataTest")
-    public static Object[][] dataTestUser() {
-        return new Object[][]{
-                {USER_EMAIL, USER_PASSWORD}
-        };
-    }
-
     @BeforeClass
     public static void openMainPage() {
         openSite();
-        clickInteractiveElement(SIGN_UP_BUTTON_LOCATOR, SIGN_UP_STRING_LOCATOR);
+        clickInteractiveElement(HEAD_SIGN_UP_BUTTON_LOCATOR, SIGN_UP_TEXT_LOCATOR);
     }
 
     /**
      *
      * Проверка на то, что все элементы на странице отображены
      */
-    @Test(dataProvider = "SignUpLocator", priority = 1)
+    @Test(dataProvider = "SignUpLocators", priority = 1)
     public static void checkSignUpElementsIsDisplay(By xpath) {
         assertTrue(isDisplay(xpath), NOT_VISIBLE_MASSAGE);
     }
@@ -71,7 +46,7 @@ public class SignUpPageTest {
      *
      * Проверка на то, что все элементы на странице активны - Enable
      */
-    @Test(dataProvider = "SignUpLocator", priority = 2)
+    @Test(dataProvider = "SignUpLocators", priority = 2)
     public static void checkSignUpElementsIsEnable(By xpath) {
         assertTrue(isEnable(xpath), NOT_ENABLE_MASSAGE);
     }
@@ -81,16 +56,35 @@ public class SignUpPageTest {
      * Тестовый метод регистрации нового пользователя
      */
     @Test(dataProvider = "userDataTest", priority = 3)
-    public static void signUp(String userEmail, String userPassword) {
-        sendKeys(INPUT_EMAIL_FIELD_LOCATOR, userEmail);
-        sendKeys(INPUT_PASSWORD_FIELD_LOCATOR, userPassword);
-        clickInteractiveElement(SignUpPage.SIGN_UP_BUTTON_LOCATOR, LOGIN_STRING_LOCATOR);
+    public static void signUp() {
+        sendKeys(INPUT_EMAIL_FIELD_LOCATOR, USER_EMAIL);
+        sendKeys(INPUT_PASSWORD_FIELD_LOCATOR, USER_PASSWORD);
+        clickInteractiveElement(SignUpPage.SIGN_UP_BUTTON_LOCATOR, LOGIN_TEXT_LOCATOR);
 
-        assertTrue(isDisplay(LOGIN_STRING_LOCATOR),NOT_VISIBLE_MASSAGE);
+        assertTrue(isDisplay(LOGIN_TEXT_LOCATOR), NOT_VISIBLE_MASSAGE);
     }
 
     @AfterTest
     public static void exitBrowser() {
         browserQuit();
     }
+
+    /**
+     *
+     * набор локаторов со страницы регистрации нового пользователя
+     */
+    @DataProvider(name = "SignUpLocators")
+    public static Object[] arrayXpath() {
+        return new Object[]{
+                INPUT_EMAIL_FIELD_LOCATOR,
+                INPUT_PASSWORD_FIELD_LOCATOR,
+                INPUT_NAME_FIELD_LOCATOR,
+                SIGN_UP_TEXT_LOCATOR
+        };
+    }
+
+    /**
+     *
+     *Данные для регистрации нового пользователя из класса DataUserConstants
+     */
 }
