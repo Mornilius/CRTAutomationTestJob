@@ -1,6 +1,7 @@
 package Page;
 
 import org.openqa.selenium.By;
+
 import static Page.LoginPage.INPUT_FIELD;
 
 public class SignUpPage {

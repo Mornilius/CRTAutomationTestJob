@@ -22,6 +22,8 @@ import static Utils.DefaultUsingMethods.isDisplay;
 import static Utils.DefaultUsingMethods.isEnable;
 import static Utils.DefaultUsingMethods.openSite;
 import static Utils.DefaultUsingMethods.sendKeys;
+import static Utils.MassageConstants.NOT_ENABLE_MASSAGE;
+import static Utils.MassageConstants.NOT_VISIBLE_MASSAGE;
 import static org.testng.Assert.assertTrue;
 
 public class LoginPageTest {
@@ -64,7 +66,7 @@ public class LoginPageTest {
      */
     @Test(dataProvider = "LoginPageXpath", priority = 1)
     public static void checkElementsIsEnable(By xpath) {
-        assertTrue(isEnable(xpath));
+        assertTrue(isEnable(xpath),NOT_ENABLE_MASSAGE);
     }
 
     /**
@@ -73,7 +75,7 @@ public class LoginPageTest {
      */
     @Test(dataProvider = "LoginPageXpath", priority = 2)
     public static void checkElementsIsDisplay(By xpath) {
-        assertTrue(isDisplay(xpath));
+        assertTrue(isDisplay(xpath),NOT_VISIBLE_MASSAGE);
     }
 
     @Test(dataProvider = "userDataTest", priority = 3)
@@ -81,7 +83,8 @@ public class LoginPageTest {
         sendKeys(INPUT_EMAIL_FIELD_LOCATOR, userEmail);
         sendKeys(INPUT_PASSWORD_FIELD_LOCATOR, userPassword);
         clickInteractiveElement(LoginPage.LOGIN_BUTTON_LOCATOR, WELCOME_STRING_LOCATOR);
-        assertTrue(isDisplay(WELCOME_STRING_LOCATOR));
+
+        assertTrue(isDisplay(WELCOME_STRING_LOCATOR),NOT_VISIBLE_MASSAGE);
     }
 
     @AfterTest

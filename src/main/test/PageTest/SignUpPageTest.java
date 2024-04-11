@@ -21,6 +21,8 @@ import static Utils.DefaultUsingMethods.isDisplay;
 import static Utils.DefaultUsingMethods.isEnable;
 import static Utils.DefaultUsingMethods.openSite;
 import static Utils.DefaultUsingMethods.sendKeys;
+import static Utils.MassageConstants.NOT_ENABLE_MASSAGE;
+import static Utils.MassageConstants.NOT_VISIBLE_MASSAGE;
 import static org.testng.Assert.assertTrue;
 
 public class SignUpPageTest {
@@ -62,7 +64,7 @@ public class SignUpPageTest {
      */
     @Test(dataProvider = "SignUpLocator", priority = 1)
     public static void checkSignUpElementsIsDisplay(By xpath) {
-        assertTrue(isDisplay(xpath));
+        assertTrue(isDisplay(xpath), NOT_VISIBLE_MASSAGE);
     }
 
     /**
@@ -71,7 +73,7 @@ public class SignUpPageTest {
      */
     @Test(dataProvider = "SignUpLocator", priority = 2)
     public static void checkSignUpElementsIsEnable(By xpath) {
-        assertTrue(isEnable(xpath));
+        assertTrue(isEnable(xpath), NOT_ENABLE_MASSAGE);
     }
 
     /**
@@ -79,11 +81,12 @@ public class SignUpPageTest {
      * Тестовый метод регистрации нового пользователя
      */
     @Test(dataProvider = "userDataTest", priority = 3)
-    public static void signUp(String userEmail, String userPassword){
+    public static void signUp(String userEmail, String userPassword) {
         sendKeys(INPUT_EMAIL_FIELD_LOCATOR, userEmail);
         sendKeys(INPUT_PASSWORD_FIELD_LOCATOR, userPassword);
         clickInteractiveElement(SignUpPage.SIGN_UP_BUTTON_LOCATOR, LOGIN_STRING_LOCATOR);
-        assertTrue(isDisplay(LOGIN_STRING_LOCATOR));
+
+        assertTrue(isDisplay(LOGIN_STRING_LOCATOR),NOT_VISIBLE_MASSAGE);
     }
 
     @AfterTest

@@ -9,8 +9,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.Duration;
-import java.util.Arrays;
-import java.util.List;
 
 import static Page.HomePage.HOME_STRING_LOCATOR;
 import static Utils.DriverUtils.driver;
