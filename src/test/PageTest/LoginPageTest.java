@@ -35,7 +35,7 @@ import static org.testng.Assert.assertTrue;
 public class LoginPageTest {
 
     @BeforeMethod
-    public static void openMainPage() throws InterruptedException {
+    public static void openMainPage() {
         openSite();
         clickInteractiveElement(HEAD_LOGIN_BUTTON_LOCATOR, LOGIN_TEXT_LOCATOR);
     }
@@ -67,23 +67,15 @@ public class LoginPageTest {
      * @param userPassword
      */
     @Test(dataProvider = "userDataTest")
-    public static void LogIn(String userEmail, String userPassword) {
-        boolean loginTrue;
+    public static void LogIn(String userEmail, String userPassword, By locator) {
         try {
             sendKeys(INPUT_EMAIL_FIELD_LOCATOR, userEmail);
             sendKeys(INPUT_PASSWORD_FIELD_LOCATOR, userPassword);
-            clickInteractiveElement(LoginPage.LOGIN_BUTTON_LOCATOR, WELCOME_TEXT_LOCATOR);
-            isDisplay(WELCOME_TEXT_LOCATOR);
-            loginTrue = true;
-        }catch(TimeoutException e) {
-            isDisplay(ERROR_TEXT_LOCATOR);
-            loginTrue = false;
-        }
+            clickInteractiveElement(LoginPage.LOGIN_BUTTON_LOCATOR, locator);
 
-        if (loginTrue) {
-            assertTrue(isDisplay(WELCOME_TEXT_LOCATOR), NOT_VISIBLE_MASSAGE);
-        }else {
-            assertTrue(isDisplay(ERROR_TEXT_LOCATOR), NOT_VISIBLE_MASSAGE);
+            assertTrue(isDisplay(locator), NOT_VISIBLE_MASSAGE);
+        }catch(TimeoutException e) {
+            assertTrue(isDisplay(locator), NOT_VISIBLE_MASSAGE);
         }
     }
 
@@ -98,7 +90,7 @@ public class LoginPageTest {
      */
     @DataProvider(name = "LoginPageLocators")
     public static Object[] arrayLoginPageXpath() {
-        return new Object[]{
+        return new Object[] {
                 LOGIN_TEXT_LOCATOR,
                 INPUT_EMAIL_FIELD_LOCATOR,
                 INPUT_PASSWORD_FIELD_LOCATOR,
@@ -109,13 +101,13 @@ public class LoginPageTest {
 
     /**
      *
-     *Данные для авторизации пользователя(ей) из класса DataUserConstants(позитивные + негативные)
+     *Данные для авторизации пользователя(ей) из класса DataUserConstants(позитивные, негативные)
      */
     @DataProvider(name = "userDataTest")
     public static Object[][] dataTestUser() {
-        return new Object[][]{
-                {USER_EMAIL, USER_PASSWORD},
-                {USER2_EMAIL, USER2_PASSWORD}
+        return new Object[][] {
+                {USER_EMAIL, USER_PASSWORD, WELCOME_TEXT_LOCATOR},
+                {USER2_EMAIL, USER2_PASSWORD, ERROR_TEXT_LOCATOR}
         };
     }
 }
