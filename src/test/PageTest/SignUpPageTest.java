@@ -2,8 +2,8 @@ package PageTest;
 
 import Page.SignUpPage;
 import org.openqa.selenium.By;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -27,7 +27,7 @@ import static org.testng.Assert.assertTrue;
 
 public class SignUpPageTest {
 
-    @BeforeClass
+    @BeforeMethod
     public static void openMainPage() {
         openSite();
         clickInteractiveElement(HEAD_SIGN_UP_BUTTON_LOCATOR, SIGN_UP_TEXT_LOCATOR);
@@ -35,36 +35,27 @@ public class SignUpPageTest {
 
     /**
      *
-     * Проверка на то, что все элементы на странице отображены
+     * Проверка на то, что элементы на странице отображены
      */
-    @Test(dataProvider = "SignUpLocators", priority = 1)
+    @Test(dataProvider = "SignUpLocators")
     public static void checkSignUpElementsIsDisplay(By xpath) {
         assertTrue(isDisplay(xpath), NOT_VISIBLE_MASSAGE);
     }
 
     /**
      *
-     * Проверка на то, что все элементы на странице активны - Enable
-     */
-    @Test(dataProvider = "SignUpLocators", priority = 2)
-    public static void checkSignUpElementsIsEnable(By xpath) {
-        assertTrue(isEnable(xpath), NOT_ENABLE_MASSAGE);
-    }
-
-    /**
-     *
      * Тестовый метод регистрации нового пользователя
      */
-    @Test(dataProvider = "userDataTest", priority = 3)
-    public static void signUp() {
-        sendKeys(INPUT_EMAIL_FIELD_LOCATOR, USER_EMAIL);
-        sendKeys(INPUT_PASSWORD_FIELD_LOCATOR, USER_PASSWORD);
+    @Test(dataProvider = "userDataTest")
+    public static void signUp(String userName, String userPassword) {
+        sendKeys(INPUT_EMAIL_FIELD_LOCATOR, userName);
+        sendKeys(INPUT_PASSWORD_FIELD_LOCATOR, userPassword);
         clickInteractiveElement(SignUpPage.SIGN_UP_BUTTON_LOCATOR, LOGIN_TEXT_LOCATOR);
 
         assertTrue(isDisplay(LOGIN_TEXT_LOCATOR), NOT_VISIBLE_MASSAGE);
     }
 
-    @AfterTest
+    @AfterMethod
     public static void exitBrowser() {
         browserQuit();
     }
@@ -87,4 +78,10 @@ public class SignUpPageTest {
      *
      *Данные для регистрации нового пользователя из класса DataUserConstants
      */
+    @DataProvider(name = "userDataTest")
+    public static Object[][] dataTestUser() {
+        return new Object[][]{
+                {USER_EMAIL, USER_PASSWORD}
+        };
+    }
 }

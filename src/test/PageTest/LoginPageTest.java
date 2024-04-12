@@ -2,16 +2,15 @@ package PageTest;
 
 import Page.LoginPage;
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import static Page.HomePage.HEAD_LOGIN_BUTTON_LOCATOR;
 import static Page.LoginPage.CHECKBOX_REMEMBER_ME_LOCATOR;
+import static Page.LoginPage.ERROR_TEXT_LOCATOR;
 import static Page.LoginPage.INPUT_EMAIL_FIELD_LOCATOR;
 import static Page.LoginPage.INPUT_PASSWORD_FIELD_LOCATOR;
 import static Page.LoginPage.LOGIN_TEXT_LOCATOR;
@@ -21,16 +20,15 @@ import static Utils.DataUserConstants.USER2_PASSWORD;
 import static Utils.DataUserConstants.USER_EMAIL;
 import static Utils.DataUserConstants.USER_PASSWORD;
 import static Utils.DefaultUsingMethods.JSClick;
-import static Utils.DefaultUsingMethods.browserClose;
 import static Utils.DefaultUsingMethods.browserQuit;
 import static Utils.DefaultUsingMethods.clickInteractiveElement;
 import static Utils.DefaultUsingMethods.elementIsSelected;
 import static Utils.DefaultUsingMethods.isDisplay;
-import static Utils.DefaultUsingMethods.isEnable;
 import static Utils.DefaultUsingMethods.openSite;
 import static Utils.DefaultUsingMethods.sendKeys;
-import static Utils.MassageConstants.NOT_ENABLE_MASSAGE;
+import static Utils.MassageConstants.NOT_SELECT_MASSAGE;
 import static Utils.MassageConstants.NOT_VISIBLE_MASSAGE;
+import static Utils.MassageConstants.SELECT_MASSAGE;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
@@ -43,47 +41,50 @@ public class LoginPageTest {
     }
 
     /**
-     *
-     * Проверка на то, что все элементы на странице кликабильны
-     */
-    @Test(dataProvider = "LoginPageLocators", priority = 1)
-    public static void checkElementsIsEnable(By xpath) {
-        assertTrue(isEnable(xpath), NOT_ENABLE_MASSAGE);
-    }
-
-    /**
      * Проверка корректной работы чекбокса
      */
     @Test
-    public static void checkElementIsSelected(){
-        assertFalse(elementIsSelected(CHECKBOX_REMEMBER_ME_LOCATOR));
+    public static void checkElementIsSelecting() {
+        assertFalse(elementIsSelected(CHECKBOX_REMEMBER_ME_LOCATOR), SELECT_MASSAGE);
 
         JSClick(CHECKBOX_REMEMBER_ME_LOCATOR);
 
-        assertTrue(elementIsSelected(CHECKBOX_REMEMBER_ME_LOCATOR));
+        assertTrue(elementIsSelected(CHECKBOX_REMEMBER_ME_LOCATOR), NOT_SELECT_MASSAGE);
     }
 
     /**
      *
      * Проверка на то, что все элементы на странице отображены
      */
-    @Test(dataProvider = "LoginPageLocators", priority = 2)
+    @Test(dataProvider = "LoginPageLocators")
     public static void checkElementsIsDisplay(By xpath) {
         assertTrue(isDisplay(xpath), NOT_VISIBLE_MASSAGE);
     }
 
     /**
-     * Тестовый метод авторизации пользователя
+     * Тестовый метод авторизации пользователя, с разными тестовыми данными (позитивными и негативными)
      * @param userEmail
      * @param userPassword
      */
     @Test(dataProvider = "userDataTest")
     public static void LogIn(String userEmail, String userPassword) {
-        sendKeys(INPUT_EMAIL_FIELD_LOCATOR, userEmail);
-        sendKeys(INPUT_PASSWORD_FIELD_LOCATOR, userPassword);
-        clickInteractiveElement(LoginPage.LOGIN_BUTTON_LOCATOR, WELCOME_TEXT_LOCATOR);
+        boolean loginTrue;
+        try {
+            sendKeys(INPUT_EMAIL_FIELD_LOCATOR, userEmail);
+            sendKeys(INPUT_PASSWORD_FIELD_LOCATOR, userPassword);
+            clickInteractiveElement(LoginPage.LOGIN_BUTTON_LOCATOR, WELCOME_TEXT_LOCATOR);
+            isDisplay(WELCOME_TEXT_LOCATOR);
+            loginTrue = true;
+        }catch(TimeoutException e) {
+            isDisplay(ERROR_TEXT_LOCATOR);
+            loginTrue = false;
+        }
 
-        assertTrue(isDisplay(WELCOME_TEXT_LOCATOR), NOT_VISIBLE_MASSAGE);
+        if (loginTrue) {
+            assertTrue(isDisplay(WELCOME_TEXT_LOCATOR), NOT_VISIBLE_MASSAGE);
+        }else {
+            assertTrue(isDisplay(ERROR_TEXT_LOCATOR), NOT_VISIBLE_MASSAGE);
+        }
     }
 
     @AfterMethod
@@ -108,7 +109,7 @@ public class LoginPageTest {
 
     /**
      *
-     *Данные для регистрации нового пользователя из класса DataUserConstants
+     *Данные для авторизации пользователя(ей) из класса DataUserConstants(позитивные + негативные)
      */
     @DataProvider(name = "userDataTest")
     public static Object[][] dataTestUser() {

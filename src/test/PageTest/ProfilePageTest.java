@@ -1,6 +1,5 @@
 package PageTest;
 
-import Page.HomePage;
 import Page.LoginPage;
 import org.openqa.selenium.By;
 import org.testng.annotations.AfterTest;
@@ -8,6 +7,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import static Page.HomePage.HEAD_LOGIN_BUTTON_LOCATOR;
 import static Page.LoginPage.INPUT_EMAIL_FIELD_LOCATOR;
 import static Page.LoginPage.INPUT_PASSWORD_FIELD_LOCATOR;
 import static Page.LoginPage.LOGIN_TEXT_LOCATOR;
@@ -29,16 +29,21 @@ public class ProfilePageTest {
     @BeforeClass
     public static void openMainPage() {
         openSite();
-        clickInteractiveElement(HomePage.HEAD_LOGIN_BUTTON_LOCATOR, LOGIN_TEXT_LOCATOR);
+        clickInteractiveElement(HEAD_LOGIN_BUTTON_LOCATOR, LOGIN_TEXT_LOCATOR);
         sendKeys(INPUT_EMAIL_FIELD_LOCATOR, USER_EMAIL);
         sendKeys(INPUT_PASSWORD_FIELD_LOCATOR, USER_PASSWORD);
         clickInteractiveElement(LoginPage.LOGIN_BUTTON_LOCATOR, WELCOME_TEXT_LOCATOR);
     }
 
+    /**
+     * Тест на отображение элементов на странице
+     * @param xpath
+     */
     @Test(dataProvider = "ProfilePageLocators")
     public static void checkProfileElementsIsDisplay(By xpath) {
         assertTrue(isDisplay(xpath));
     }
+
     @AfterTest
     public static void exitBrowser() {
         browserQuit();

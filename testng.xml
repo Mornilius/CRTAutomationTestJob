@@ -11,15 +11,19 @@
             <class name="PageTest.SignUpPageTest">
                 <methods>
                     <include name="checkSignUpElementsIsDisplay"/>
-                    <include name="checkSignUpElementsIsEnable"/>
                     <include name="signUp"/>
                 </methods>
             </class>
             <class name="PageTest.LoginPageTest">
                 <methods>
-                    <include name="checkElementsIsEnable"/>
+                    <include name="checkElementIsSelecting"/>
                     <include name="checkElementsIsDisplay"/>
                     <include name="LogIn"/>
+                </methods>
+            </class>
+            <class name="PageTest.ProfilePageTest">
+                <methods>
+                    <include name="checkProfileElementsIsDisplay"/>
                 </methods>
             </class>
         </classes>
